@@ -23,7 +23,7 @@ namespace EFCodeFirstApp.Models.Services
             smtp.Host = "smtp.gmail.com"; //for gmail host  
             smtp.EnableSsl = true;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new NetworkCredential("nbuy_oglen@gmail.com", "nbuy12345");
+            smtp.Credentials = new NetworkCredential("nbuy.oglen@gmail.com", "Nbuy12345");
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtp.Send(msg);
         }

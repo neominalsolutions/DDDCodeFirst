@@ -45,7 +45,7 @@ namespace EFCodeFirstApp.Models.Aggregates.CategoryAggregate
         /// Ürün eklerken kullanacağınacağımız algoritma
         /// </summary>
         /// <param name="product"></param>
-        public void AddProduct(string name, short stock, decimal price, bool promotion, ICategoryRepository categoryRepository, IEmailSender emailSender)
+        public void AddProduct(string name, short stock, decimal price, bool promotion, IProductAddDomainService domainService)
         {
 
             bool sameNameExists = products.Any(x => x.Name == name.Trim());
@@ -68,11 +68,23 @@ namespace EFCodeFirstApp.Models.Aggregates.CategoryAggregate
 
             products.Add(product);
 
-            var @args = new ProductAddedEventArgs(product,"mert.alptekin@neominal.com", "nbuy_oglen@gmail.com");
-            var @events = new ProductAdded(categoryRepository, emailSender);
-            @events.Handle(@args);
+            var @events = new ProductAdded(
+                notifyFrom: "nbuy.oglen@gmail.com",
+                notifyTo: "mert.alptekin@neominal.com",
+                productName: product.Name,
+                price: product.UnitPrice,
+                stock: product.UnitsInStock,
+                promotion:product.IsPromotion
+                );
 
-           
+            // eventi işler
+            domainService.onProcess(@events);
+
+            //var @args = new ProductAddedEventArgs(product,"mert.alptekin@neominal.com", "nbuy_oglen@gmail.com");
+            //var @events = new ProductAdded(categoryRepository, emailSender);
+            //@events.Handle(@args);
+
+
         }
 
 

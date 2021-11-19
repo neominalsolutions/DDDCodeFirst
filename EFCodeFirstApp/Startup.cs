@@ -1,6 +1,8 @@
 using EFCodeFirstApp.Models;
 using EFCodeFirstApp.Models.Aggregates.CategoryAggregate;
 using EFCodeFirstApp.Models.Repositories;
+using EFCodeFirstApp.Models.SeedWork;
+using EFCodeFirstApp.Models.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -64,7 +66,18 @@ namespace EFCodeFirstApp
 
             //services.AddDbContext<ECommerceDbContext>();
 
+            // repository ve servisler için addscope kullanýrýz.
+            // her bir web istedeði için 1 adet instance üretir.
             services.AddScoped<ICategoryRepository, EFCategoryRepository>();
+            services.AddScoped<IProductAddDomainService, ProductAddDomainService>();
+            // eventlerin instance için transient kullanýrýz.
+            // her bir iþlem için tekrar tekrar instance üretir.
+            services.AddTransient<IProductAddEventHandler,ProductAddEventHandler>();
+
+            
+
+            // uygulama genelinde tek bir instance ile çalýþýr.
+            services.AddSingleton<IEmailSender, NetSmptMailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

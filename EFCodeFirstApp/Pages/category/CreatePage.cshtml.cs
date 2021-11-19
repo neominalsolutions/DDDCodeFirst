@@ -50,15 +50,16 @@ namespace EFCodeFirstApp.Pages.category
     {
         [BindProperty]
         public CategoryCreateInputModel InputModel { get; set; }
+        private IProductAddDomainService _productAddService;
         private ICategoryRepository _categoryRepository;
-        private IEmailSender _emailSender;
+       
 
 
-        public CreatePageModel(ICategoryRepository categoryRepository, IEmailSender emailSender)
+        public CreatePageModel(IProductAddDomainService productAddDomainService, ICategoryRepository categoryRepository)
         {
             InputModel = new CategoryCreateInputModel();
+            _productAddService = productAddDomainService;
             _categoryRepository = categoryRepository;
-            _emailSender = emailSender;
         }
 
         public void OnGet()
@@ -85,7 +86,7 @@ namespace EFCodeFirstApp.Pages.category
                     foreach (var item in InputModel.Products)
                     {
 
-                        c.AddProduct(item.Name, item.Stock, item.Price, item.IsPromotion, _categoryRepository, _emailSender);
+                        c.AddProduct(item.Name, item.Stock, item.Price, item.IsPromotion, _productAddService);
                     }
 
                     // event olduðu için category aggregate içerisindeki AddProduct methodu ile category üzerinden ürünü sisteme eklemiþ olduk
