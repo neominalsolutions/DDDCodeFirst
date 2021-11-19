@@ -22,11 +22,6 @@ namespace EFCodeFirstApp.Models
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=ECommerceDB;Pooling=true;");
-            base.OnConfiguring(optionsBuilder);
-        }
 
         // Databasedeki tablolarımız
         public DbSet<Product> Products { get; set; }
