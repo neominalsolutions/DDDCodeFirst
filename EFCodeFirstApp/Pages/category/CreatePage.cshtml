@@ -1,0 +1,75 @@
+﻿@page
+@model EFCodeFirstApp.Pages.category.CreatePageModel
+@{
+}
+
+
+
+
+    @* division bir satır alta geçmemizi sağlar *@
+
+<div>@ViewData["Message"]</div>
+   
+<div asp-validation-summary="All"></div>
+
+    <form method="post">
+        <div>
+            @* self closing tag *@
+            @* html elementlerine ise tag etiket ismi veririz *@
+            @* asp-for ile Name alanına model binding yaptık *@
+            <input type="text" asp-for="InputModel.Name" placeholder="Kategori Adı" />
+            @* bu asp-validation-for kontrol et *@
+            <span asp-validation-for="InputModel.Name"></span>
+        </div>
+
+        <div>
+            <button asp-page-handler="AddProduct">Add Product</button>
+            <button asp-page-handler="RemoveProduct"> Remove Product</button>
+        </div>
+
+        <table border="1" width="100%">
+            <thead>
+                <tr>
+                    <th>Ürün Adı</th>
+                    <th>Ürün Fiyatı</th>
+                    <th>Ürün Stok</th>
+                    <th>Promosyon</th>
+                </tr>
+            </thead>
+            <tbody>
+                @* form içerisinden birden fazla veri gönderdiğimizde index mekanizmasını kullanırız. bu sebep ile foreach yerine for kullandık *@
+                @for (int i = 0; i < Model.InputModel.Products.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <input asp-for="InputModel.Products[i].Name" type="text" placeholder="Ürün Adı" />
+                            <span asp-validation-for="InputModel.Products[i].Name"></span>
+                        </td>
+                        <td>
+                            <input type="number" asp-for="InputModel.Products[i].Price" placeholder="Ürün Fiyat" />
+                            <span asp-validation-for="InputModel.Products[i].Price"></span>
+                        </td>
+                        <td>
+                            <input type="number" asp-for="InputModel.Products[i].Stock" placeholder="Ürün Stock" />
+                            <span asp-validation-for="InputModel.Products[i].Stock"></span>
+                        </td>
+                        <td>
+                            <input type="checkbox" asp-for="InputModel.Products[i].IsPromotion" />
+                            <span asp-validation-for="InputModel.Products[i].IsPromotion"></span>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+        <div>Ürün Adeti @ViewData["ProductCount"]</div>
+
+
+        <div>
+            <button asp-page-handler="Save">Save</button>
+        </div>
+
+    </form>
+
